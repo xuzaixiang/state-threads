@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(state_threads C)
 enable_language(C ASM)
 
+option(USE_POLL "To use poll(2) instead of select(2) for events checking" ON)
 
 # ----------------------------------------------------------------------------------------------------------------------
 if (${CMAKE_SYSTEM_NAME} MATCHES Linux)
@@ -12,5 +13,8 @@ if (${CMAKE_SYSTEM_NAME} MATCHES Linux)
     endif ()
 endif ()
 
+if (USE_POLL)
+    add_definitions(-DUSE_POLL)
+endif ()
 
 add_library(st SHARED event.c io.c key.c sched.c stk.c sync.c md.S)
